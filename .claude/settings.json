@@ -1,0 +1,16 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "cd /Users/codepro2020mbp02/Desktop/share-calendar && git add -A && git diff --cached --quiet || (git commit -m \"Auto-commit: $(date '+%Y-%m-%d %H:%M')\" && git push origin main) 2>/dev/null || true",
+            "statusMessage": "Committing and pushing..."
+          }
+        ]
+      }
+    ]
+  }
+}
