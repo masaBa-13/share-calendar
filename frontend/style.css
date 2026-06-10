@@ -367,14 +367,14 @@ body {
 .site-footer-inner {
   max-width: 680px;
   margin: 0 auto;
-  height: 52px;
+  height: 64px;
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
 }
 
 .footer-logo {
-  height: 20px;
+  height: 32px;
   width: auto;
   opacity: 0.85;
   filter: brightness(0) invert(1);
