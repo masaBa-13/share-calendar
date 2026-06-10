@@ -1,0 +1,190 @@
+.about-hero {
+  padding: 2rem 0 2rem;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.about-hero-logo {
+  width: 64px;
+  height: 64px;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(139, 124, 216, 0.2);
+  margin-bottom: 1rem;
+}
+
+.about-hero-title {
+  font-size: 24px;
+  font-weight: 600;
+  background: var(--grad);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 10px;
+  line-height: 1.5;
+}
+
+.about-hero-sub {
+  font-size: 14px;
+  color: var(--text-sub);
+  line-height: 1.75;
+}
+
+.about-section {
+  margin-bottom: 2rem;
+}
+
+.about-section-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 10px;
+  padding-left: 10px;
+  border-left: 3px solid var(--purple);
+}
+
+.about-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 1px 4px rgba(139, 124, 216, 0.06);
+}
+
+.about-card p {
+  font-size: 14px;
+  color: var(--text-sub);
+  line-height: 1.75;
+  margin-bottom: 12px;
+}
+
+.about-card p:last-child {
+  margin-bottom: 0;
+}
+
+.about-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.about-list li {
+  font-size: 14px;
+  color: var(--text);
+  padding-left: 1.4em;
+  position: relative;
+  line-height: 1.6;
+}
+
+.about-list li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.55em;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--grad);
+}
+
+/* 料金カード */
+.about-price-card {
+  padding: 0;
+  overflow: hidden;
+}
+
+.price-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px 20px;
+}
+
+.price-label {
+  font-size: 13px;
+  color: var(--text-sub);
+  flex-shrink: 0;
+}
+
+.price-value {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+  text-align: right;
+}
+
+.price-note {
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--text-sub);
+}
+
+.price-divider {
+  height: 1px;
+  background: var(--border);
+  margin: 0 20px;
+}
+
+/* リポジトリリンク */
+.repo-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 9px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+  text-decoration: none;
+  margin: 4px 0 14px;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.repo-link:hover {
+  background: var(--blue-light);
+  border-color: var(--blue);
+}
+
+.about-note {
+  font-size: 13px;
+  color: var(--text-sub);
+  line-height: 1.7;
+  padding: 12px 14px;
+  background: var(--pink-light);
+  border-radius: 10px;
+}
+
+/* CTA */
+.about-cta {
+  text-align: center;
+  padding: 2rem 0 1rem;
+}
+
+.about-cta-text {
+  font-size: 14px;
+  color: var(--text-sub);
+  margin-bottom: 16px;
+}
+
+.cta-btn {
+  display: inline-block;
+  background: var(--grad);
+  color: white;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: inherit;
+  padding: 13px 32px;
+  border-radius: 12px;
+  text-decoration: none;
+  transition: opacity 0.15s, transform 0.15s;
+  box-shadow: 0 4px 16px rgba(139, 124, 216, 0.3);
+}
+
+.cta-btn:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
