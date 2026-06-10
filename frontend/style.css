@@ -408,8 +408,8 @@ body {
   position: fixed;
   bottom: 24px;
   right: 20px;
-  width: 64px;
-  height: 64px;
+  width: 96px;
+  height: 96px;
   z-index: 50;
   transition: transform 0.2s;
   -webkit-tap-highlight-color: transparent;
