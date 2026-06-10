@@ -2,3 +2,4 @@ node_modules/
 worker/.dev.vars
 worker/.wrangler/
 *.local
+.DS_Store
