@@ -95,6 +95,15 @@ body {
   padding: 1.5rem 1rem 3rem;
 }
 
+/* スケジュールオーナー */
+.schedule-owner {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 1.25rem;
+  letter-spacing: 0.02em;
+}
+
 /* タグライン */
 .tagline {
   font-size: 13px;
