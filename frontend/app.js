@@ -1,6 +1,6 @@
 const WORKER_URL = location.hostname === 'localhost' || location.hostname === '127.0.0.1' || location.hostname.startsWith('192.168.')
   ? `http://${location.hostname === 'localhost' || location.hostname === '127.0.0.1' ? 'localhost' : location.hostname}:8787`
-  : 'https://free-slot-worker.your-subdomain.workers.dev';
+  : 'https://free-slot-worker.miraidai.workers.dev';
 
 const DAY_JP = ['日', '月', '火', '水', '木', '金', '土'];
 
