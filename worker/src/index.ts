@@ -206,6 +206,10 @@ export default {
       return new Response(null, { headers: CORS_HEADERS });
     }
 
+    if (url.pathname === '/' || url.pathname === '') {
+      return Response.redirect('https://aima-ewj.pages.dev', 302);
+    }
+
     // ---- GET /api/slots ----
     if (url.pathname === '/api/slots' && request.method === 'GET') {
       try {
