@@ -67,6 +67,7 @@ GOOGLE_OAUTH_CLIENT_ID=<CLIENT_ID>
 GOOGLE_OAUTH_CLIENT_SECRET=<CLIENT_SECRET>
 GOOGLE_REFRESH_TOKEN=<REFRESH_TOKEN>
 CALENDAR_IDS=your-email@gmail.com
+OWNER_CALENDAR=your-email@gmail.com
 ```
 
 > `GOOGLE_PRIVATE_KEY` はJSONの `"private_key"` の値をそのまま貼る（`\n` はエスケープのまま）。  
@@ -107,6 +108,7 @@ wrangler secret put GOOGLE_OAUTH_CLIENT_ID
 wrangler secret put GOOGLE_OAUTH_CLIENT_SECRET
 wrangler secret put GOOGLE_REFRESH_TOKEN
 wrangler secret put CALENDAR_IDS
+wrangler secret put OWNER_CALENDAR
 
 # デプロイ
 wrangler deploy

@@ -5,12 +5,12 @@ export interface Env {
   GOOGLE_OAUTH_CLIENT_ID: string;
   GOOGLE_OAUTH_CLIENT_SECRET: string;
   GOOGLE_REFRESH_TOKEN: string;
+  OWNER_CALENDAR: string;
 }
 
 const WORK_START = 9 * 60;
 const WORK_END   = 17 * 60;
 const DAY_JP = ['日', '月', '火', '水', '木', '金', '土'];
-const OWNER_CALENDAR = 'masaharu2000.01.04@gmail.com';
 const INPERSON_BUFFER = 30;
 
 function getJapaneseHolidays(year: number): Set<string> {
@@ -303,7 +303,7 @@ export default {
 
         const writeToken = await getOAuthAccessToken(env);
         const createUrl =
-          `https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(OWNER_CALENDAR)}/events?sendUpdates=all`;
+          `https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(env.OWNER_CALENDAR)}/events?sendUpdates=all`;
         const resp = await fetch(createUrl, {
           method: 'POST',
           headers: { Authorization: `Bearer ${writeToken}`, 'Content-Type': 'application/json' },
