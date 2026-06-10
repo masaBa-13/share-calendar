@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>空き時間</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>空き時間</h1>
+      <button class="copy-btn" onclick="copyAll()">📋 コピー</button>
+    </header>
+    <div class="controls">
+      <div class="control-group">
+        <span class="label">単位</span>
+        <button class="btn active" id="btn30" onclick="setUnit(30)">30分</button>
+        <button class="btn" id="btn60" onclick="setUnit(60)">1時間</button>
+      </div>
+      <div class="control-group">
+        <span class="label">形式</span>
+        <button class="btn active" id="btnOnline" onclick="setMode('online')">オンライン</button>
+        <button class="btn" id="btnInperson" onclick="setMode('inperson')">対面</button>
+      </div>
+    </div>
+    <div id="output" aria-live="polite">読み込み中...</div>
+  </div>
+
+  <!-- 予約モーダル -->
+  <div class="modal-overlay" id="modal" onclick="handleOverlayClick(event)">
+    <div class="modal">
+      <div class="modal-header">
+        <div>
+          <div class="modal-slot" id="modal-slot-label"></div>
+          <div class="modal-mode" id="modal-mode-label"></div>
+        </div>
+        <button class="modal-close" onclick="closeModal()">✕</button>
+      </div>
+      <form id="booking-form" onsubmit="submitBooking(event)">
+        <label class="form-label">
+          お名前
+          <input class="form-input" type="text" id="attendee-name" placeholder="山田 太郎" required>
+        </label>
+        <label class="form-label">
+          メールアドレス
+          <input class="form-input" type="email" id="attendee-email" placeholder="taro@example.com" required>
+        </label>
+        <div id="booking-error" class="booking-error"></div>
+        <button class="submit-btn" type="submit" id="submit-btn">カレンダーに追加</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="assertive"></div>
+  <script src="app.js"></script>
+</body>
+</html>
