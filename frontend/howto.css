@@ -1,0 +1,139 @@
+.howto-hero {
+  padding: 1.5rem 0 1.75rem;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 1.75rem;
+}
+
+.howto-title {
+  font-size: 24px;
+  font-weight: 600;
+  background: var(--grad);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 6px;
+}
+
+.howto-subtitle {
+  font-size: 14px;
+  color: var(--text-sub);
+}
+
+.howto-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 2rem;
+}
+
+.howto-step {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 20px;
+  display: flex;
+  gap: 16px;
+  box-shadow: 0 1px 4px rgba(139, 124, 216, 0.06);
+}
+
+.step-number {
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--grad);
+  color: white;
+  font-size: 14px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.step-body {
+  flex: 1;
+}
+
+.step-title {
+  font-size: 15px;
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: var(--text);
+}
+
+.step-desc {
+  font-size: 13px;
+  color: var(--text-sub);
+  line-height: 1.7;
+}
+
+.step-example {
+  margin-top: 12px;
+  background: var(--bg);
+  border-radius: 10px;
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.eg-label {
+  font-size: 11px;
+  color: var(--text-sub);
+}
+
+.eg-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.eg-tag {
+  font-size: 11px;
+  font-weight: 600;
+  border-radius: 6px;
+  padding: 2px 8px;
+  white-space: nowrap;
+}
+
+.eg-tag.online {
+  background: var(--blue-light);
+  color: #5b8dd9;
+}
+
+.eg-tag.inperson {
+  background: var(--pink-light);
+  color: var(--purple);
+}
+
+.eg-time {
+  font-size: 12px;
+  color: var(--text);
+}
+
+.eg-pre {
+  font-size: 12px;
+  color: var(--text);
+  font-family: 'MOBO', monospace;
+  line-height: 1.8;
+  white-space: pre-wrap;
+}
+
+.back-btn {
+  display: inline-block;
+  background: var(--grad);
+  color: white;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: inherit;
+  padding: 12px 24px;
+  border-radius: 12px;
+  text-decoration: none;
+  transition: opacity 0.15s, transform 0.15s;
+  margin-bottom: 1rem;
+}
+
+.back-btn:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
