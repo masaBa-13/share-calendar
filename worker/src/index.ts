@@ -2,6 +2,9 @@ export interface Env {
   GOOGLE_CLIENT_EMAIL: string;
   GOOGLE_PRIVATE_KEY: string;
   CALENDAR_IDS: string;
+  GOOGLE_OAUTH_CLIENT_ID: string;
+  GOOGLE_OAUTH_CLIENT_SECRET: string;
+  GOOGLE_REFRESH_TOKEN: string;
 }
 
 const WORK_START = 9 * 60;
@@ -161,6 +164,26 @@ function pad2(n: number): string {
   return String(n).padStart(2, '0');
 }
 
+// OAuth リフレッシュトークンからアクセストークンを取得
+async function getOAuthAccessToken(env: Env): Promise<string> {
+  const resp = await fetch('https://oauth2.googleapis.com/token', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: new URLSearchParams({
+      client_id: env.GOOGLE_OAUTH_CLIENT_ID,
+      client_secret: env.GOOGLE_OAUTH_CLIENT_SECRET,
+      refresh_token: env.GOOGLE_REFRESH_TOKEN,
+      grant_type: 'refresh_token',
+    }).toString(),
+  });
+  if (!resp.ok) {
+    const text = await resp.text();
+    throw new Error(`OAuth token refresh failed: ${resp.status} ${text}`);
+  }
+  const data = await resp.json() as { access_token: string };
+  return data.access_token;
+}
+
 const CORS_HEADERS = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Methods': 'GET,POST,OPTIONS',
@@ -273,16 +296,14 @@ export default {
 
         const event = {
           summary: `${body.attendeeName}さんとのミーティング`,
-          description: `相手: ${body.attendeeName}\nメール: ${body.attendeeEmail}`,
           start: { dateTime: startDT, timeZone: 'Asia/Tokyo' },
           end:   { dateTime: endDT,   timeZone: 'Asia/Tokyo' },
+          attendees: [{ email: body.attendeeEmail, displayName: body.attendeeName }],
         };
 
-        const writeToken = await getGoogleAccessToken(
-          env, 'https://www.googleapis.com/auth/calendar.events'
-        );
+        const writeToken = await getOAuthAccessToken(env);
         const createUrl =
-          `https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(OWNER_CALENDAR)}/events`;
+          `https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(OWNER_CALENDAR)}/events?sendUpdates=all`;
         const resp = await fetch(createUrl, {
           method: 'POST',
           headers: { Authorization: `Bearer ${writeToken}`, 'Content-Type': 'application/json' },

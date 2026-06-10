@@ -3,15 +3,24 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>空き時間</title>
+  <title>AIMA — 忙しい二人の、ちょうどいい合間。</title>
+  <link rel="icon" type="image/png" href="aima_logo_square.png">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="container">
-    <header>
-      <h1>空き時間</h1>
+
+  <div class="page-header">
+    <div class="page-header-inner">
+      <div class="brand-logo">
+        <img src="aima_logo_long.png" alt="AIMA">
+      </div>
       <button class="copy-btn" onclick="copyAll()">📋 コピー</button>
-    </header>
+    </div>
+  </div>
+
+  <div class="container">
+    <p class="tagline">忙しい二人の、ちょうどいい合間。</p>
+
     <div class="controls">
       <div class="control-group">
         <span class="label">単位</span>
@@ -24,31 +33,32 @@
         <button class="btn" id="btnInperson" onclick="setMode('inperson')">対面</button>
       </div>
     </div>
+
     <div id="output" aria-live="polite">読み込み中...</div>
   </div>
 
   <!-- 予約モーダル -->
   <div class="modal-overlay" id="modal" onclick="handleOverlayClick(event)">
     <div class="modal">
-      <div class="modal-header">
-        <div>
-          <div class="modal-slot" id="modal-slot-label"></div>
-          <div class="modal-mode" id="modal-mode-label"></div>
-        </div>
+      <div class="modal-top modal-header">
+        <div class="modal-slot" id="modal-slot-label"></div>
+        <div class="modal-mode" id="modal-mode-label"></div>
         <button class="modal-close" onclick="closeModal()">✕</button>
       </div>
-      <form id="booking-form" onsubmit="submitBooking(event)">
-        <label class="form-label">
-          お名前
-          <input class="form-input" type="text" id="attendee-name" placeholder="山田 太郎" required>
-        </label>
-        <label class="form-label">
-          メールアドレス
-          <input class="form-input" type="email" id="attendee-email" placeholder="taro@example.com" required>
-        </label>
-        <div id="booking-error" class="booking-error"></div>
-        <button class="submit-btn" type="submit" id="submit-btn">カレンダーに追加</button>
-      </form>
+      <div class="modal-body">
+        <form id="booking-form" onsubmit="submitBooking(event)">
+          <label class="form-label">
+            お名前
+            <input class="form-input" type="text" id="attendee-name" placeholder="山田 太郎" required>
+          </label>
+          <label class="form-label">
+            メールアドレス
+            <input class="form-input" type="email" id="attendee-email" placeholder="taro@example.com" required>
+          </label>
+          <div id="booking-error" class="booking-error"></div>
+          <button class="submit-btn" type="submit" id="submit-btn">カレンダーに追加</button>
+        </form>
+      </div>
     </div>
   </div>
 
