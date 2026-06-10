@@ -351,6 +351,42 @@ body {
   cursor: not-allowed;
 }
 
+/* フッター */
+.site-footer {
+  background: var(--grad);
+  padding: 0 1.5rem;
+}
+
+.site-footer-inner {
+  max-width: 680px;
+  margin: 0 auto;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.footer-logo {
+  height: 20px;
+  width: auto;
+  opacity: 0.85;
+  filter: brightness(0) invert(1);
+}
+
+.footer-copy {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.footer-copy a {
+  color: var(--white);
+  text-decoration: none;
+}
+
+.footer-copy a:hover {
+  text-decoration: underline;
+}
+
 /* トースト */
 .toast {
   position: fixed;
