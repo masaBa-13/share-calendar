@@ -244,8 +244,10 @@ export default {
           const d = new Date(jstNow);
           d.setUTCDate(d.getUTCDate() + i);
           const dateStr = d.toISOString().slice(0, 10);
-          const jstDate = new Date(dateStr + 'T00:00:00+09:00');
-          const dow = jstDate.getDay();
+          // Workers は UTC 環境なので getDay() が前日を返す。
+          // dateStr ("YYYY-MM-DD") を UTC 日付として扱い getUTCDay() で正確な曜日を取得する。
+          const [, mmStr, ddStr] = dateStr.split('-');
+          const dow = new Date(dateStr + 'T00:00:00Z').getUTCDay();
 
           if (dow === 0 || holidays.has(dateStr)) continue;
 
@@ -269,7 +271,7 @@ export default {
           if (slots.length > 0) {
             result.push({
               date: dateStr,
-              label: `${jstDate.getMonth() + 1}/${jstDate.getDate()}（${DAY_JP[dow]}）`,
+              label: `${Number(mmStr)}/${Number(ddStr)}（${DAY_JP[dow]}）`,
               slots,
             });
           }
