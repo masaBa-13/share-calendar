@@ -303,11 +303,17 @@ export default {
           start: { dateTime: startDT, timeZone: 'Asia/Tokyo' },
           end:   { dateTime: endDT,   timeZone: 'Asia/Tokyo' },
           attendees: [{ email: body.attendeeEmail, displayName: body.attendeeName }],
+          conferenceData: {
+            createRequest: {
+              requestId: `${body.date}-${body.startTime}-${body.attendeeEmail}`,
+              conferenceSolutionKey: { type: 'hangoutsMeet' },
+            },
+          },
         };
 
         const writeToken = await getOAuthAccessToken(env);
         const createUrl =
-          `https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(env.OWNER_CALENDAR)}/events?sendUpdates=all`;
+          `https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(env.OWNER_CALENDAR)}/events?sendUpdates=all&conferenceDataVersion=1`;
         const resp = await fetch(createUrl, {
           method: 'POST',
           headers: { Authorization: `Bearer ${writeToken}`, 'Content-Type': 'application/json' },
