@@ -85,6 +85,8 @@ function selectSlot(date, startTime, step) {
 function closeModal() {
   document.getElementById('modal').classList.remove('show');
   selectedSlot = null;
+  ['err-name', 'err-email'].forEach(id => { document.getElementById(id).textContent = ''; });
+  ['attendee-name', 'attendee-email'].forEach(id => { document.getElementById(id).classList.remove('input-error'); });
 }
 
 function handleOverlayClick(e) {
@@ -95,13 +97,40 @@ async function submitBooking(e) {
   e.preventDefault();
   if (!selectedSlot) return;
 
-  const name  = document.getElementById('attendee-name').value.trim();
-  const email = document.getElementById('attendee-email').value.trim();
-  const btn   = document.getElementById('submit-btn');
-  const errEl = document.getElementById('booking-error');
+  const nameEl  = document.getElementById('attendee-name');
+  const emailEl = document.getElementById('attendee-email');
+  const name    = nameEl.value.trim();
+  const email   = emailEl.value.trim();
+  const btn     = document.getElementById('submit-btn');
+  const errEl   = document.getElementById('booking-error');
+
+  // カスタムバリデーション
+  let valid = true;
+  const errName  = document.getElementById('err-name');
+  const errEmail = document.getElementById('err-email');
+  errName.textContent  = '';
+  errEmail.textContent = '';
+  nameEl.classList.remove('input-error');
+  emailEl.classList.remove('input-error');
+
+  if (!name) {
+    errName.textContent = 'お名前を入力してください';
+    nameEl.classList.add('input-error');
+    valid = false;
+  }
+  if (!email) {
+    errEmail.textContent = 'メールアドレスを入力してください';
+    emailEl.classList.add('input-error');
+    valid = false;
+  } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    errEmail.textContent = '正しいメールアドレスを入力してください';
+    emailEl.classList.add('input-error');
+    valid = false;
+  }
+  if (!valid) return;
 
   btn.disabled = true;
-  btn.textContent = '追加中...';
+  btn.textContent = '予約中...';
   errEl.textContent = '';
 
   try {

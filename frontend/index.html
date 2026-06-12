@@ -58,14 +58,16 @@
         <button class="modal-close" onclick="closeModal()">✕</button>
       </div>
       <div class="modal-body">
-        <form id="booking-form" onsubmit="submitBooking(event)">
+        <form id="booking-form" onsubmit="submitBooking(event)" novalidate>
           <label class="form-label">
             お名前
-            <input class="form-input" type="text" id="attendee-name" placeholder="山田 太郎" required>
+            <input class="form-input" type="text" id="attendee-name" placeholder="山田 太郎">
+            <span class="field-error" id="err-name"></span>
           </label>
           <label class="form-label">
             メールアドレス
-            <input class="form-input" type="email" id="attendee-email" placeholder="taro@example.com" required>
+            <input class="form-input" type="email" id="attendee-email" placeholder="taro@example.com">
+            <span class="field-error" id="err-email"></span>
           </label>
           <div id="booking-error" class="booking-error"></div>
           <button class="submit-btn" type="submit" id="submit-btn">ミーティングの予約をする</button>

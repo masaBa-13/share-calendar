@@ -335,6 +335,19 @@ body {
   background: var(--white);
 }
 
+.field-error {
+  font-size: 12px;
+  color: var(--purple);
+  margin-top: 4px;
+  min-height: 16px;
+  display: block;
+}
+
+.form-input.input-error {
+  border-color: var(--purple);
+  background: #f8f5ff;
+}
+
 .booking-error {
   font-size: 13px;
   color: #c0392b;
