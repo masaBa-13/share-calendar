@@ -28,8 +28,10 @@ async function load(u, m) {
 function render() {
   if (!cachedData) return;
   const out = document.getElementById('output');
+  const copyWrap = document.getElementById('copy-wrap');
   if (!cachedData.days || cachedData.days.length === 0) {
     out.innerHTML = '<p class="empty">空き時間がありません</p>';
+    copyWrap.hidden = true;
     return;
   }
   out.innerHTML = cachedData.days.map(day => {
@@ -45,6 +47,7 @@ function render() {
       <div class="slots">${slotsHtml}</div>
     </div>`;
   }).join('');
+  copyWrap.hidden = false;
 }
 
 function setUnit(u) {
@@ -129,8 +132,20 @@ async function submitBooking(e) {
 
 function copyAll() {
   if (!cachedData || !cachedData.days || cachedData.days.length === 0) return;
-  const text = cachedData.days.map(d => `${d.label}: ${d.slots.join(', ')}`).join('\n');
-  navigator.clipboard.writeText(text).then(() => showToast('コピーしました！')).catch(() => {
+  const step = cachedData.step;
+  const lines = [];
+  for (const day of cachedData.days) {
+    const [, mm, dd] = day.date.split('-');
+    const dow = (day.label.match(/（.）/) || [''])[0];
+    for (const slot of day.slots) {
+      const [h, m] = slot.split(':').map(Number);
+      const endMin = h * 60 + m + step;
+      const endTime = `${Math.floor(endMin / 60)}:${String(endMin % 60).padStart(2, '0')}`;
+      lines.push(`${Number(mm)}月${Number(dd)}日${dow}${slot}~${endTime}`);
+    }
+  }
+  const text = lines.join('\n');
+  navigator.clipboard.writeText(text).then(() => showToast('コピーしました')).catch(() => {
     const ta = document.createElement('textarea');
     ta.value = text;
     ta.style.cssText = 'position:fixed;opacity:0';
@@ -138,7 +153,7 @@ function copyAll() {
     ta.select();
     document.execCommand('copy');
     document.body.removeChild(ta);
-    showToast('コピーしました！');
+    showToast('コピーしました');
   });
 }
 

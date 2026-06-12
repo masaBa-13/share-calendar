@@ -403,6 +403,30 @@ body {
   text-decoration: underline;
 }
 
+/* コピーボタン */
+.copy-wrap {
+  padding: 1rem 0 0.5rem;
+  text-align: center;
+}
+
+.copy-all-btn {
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 8px 20px;
+  font-size: 13px;
+  font-family: inherit;
+  color: var(--text-sub);
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+}
+
+.copy-all-btn:hover {
+  background: var(--blue-light);
+  border-color: var(--blue);
+  color: var(--text);
+}
+
 .footer-cta {
   margin-left: auto;
   font-size: 12px;
