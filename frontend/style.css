@@ -470,8 +470,8 @@ body {
 /* トースト */
 .toast {
   position: fixed;
-  bottom: 28px;
-  right: 24px;
+  top: 20px;
+  right: 20px;
   background: var(--grad);
   color: var(--white);
   border-radius: 10px;
@@ -482,7 +482,7 @@ body {
   transition: opacity 0.3s, transform 0.3s;
   pointer-events: none;
   z-index: 200;
-  transform: translateY(8px);
+  transform: translateY(-8px);
   box-shadow: 0 4px 16px rgba(139, 124, 216, 0.35);
 }
 

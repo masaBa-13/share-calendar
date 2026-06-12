@@ -126,7 +126,7 @@ async function submitBooking(e) {
     errEl.textContent = `エラー: ${err.message}`;
   } finally {
     btn.disabled = false;
-    btn.textContent = 'カレンダーに追加';
+    btn.textContent = 'ミーティングの予約をする';
   }
 }
 
