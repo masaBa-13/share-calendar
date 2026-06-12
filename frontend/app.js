@@ -130,6 +130,27 @@ async function submitBooking(e) {
   }
 }
 
+function mergeSlots(slots, step) {
+  if (slots.length === 0) return [];
+  const toMin = t => { const [h, m] = t.split(':').map(Number); return h * 60 + m; };
+  const toTime = min => `${Math.floor(min / 60)}:${String(min % 60).padStart(2, '0')}`;
+  const ranges = [];
+  let start = toMin(slots[0]);
+  let end = start + step;
+  for (let i = 1; i < slots.length; i++) {
+    const s = toMin(slots[i]);
+    if (s === end) {
+      end = s + step;
+    } else {
+      ranges.push(`${toTime(start)}~${toTime(end)}`);
+      start = s;
+      end = s + step;
+    }
+  }
+  ranges.push(`${toTime(start)}~${toTime(end)}`);
+  return ranges;
+}
+
 function copyAll() {
   if (!cachedData || !cachedData.days || cachedData.days.length === 0) return;
   const step = cachedData.step;
@@ -137,11 +158,9 @@ function copyAll() {
   for (const day of cachedData.days) {
     const [, mm, dd] = day.date.split('-');
     const dow = (day.label.match(/（.）/) || [''])[0];
-    for (const slot of day.slots) {
-      const [h, m] = slot.split(':').map(Number);
-      const endMin = h * 60 + m + step;
-      const endTime = `${Math.floor(endMin / 60)}:${String(endMin % 60).padStart(2, '0')}`;
-      lines.push(`${Number(mm)}月${Number(dd)}日${dow}${slot}~${endTime}`);
+    const prefix = `${Number(mm)}月${Number(dd)}日${dow}`;
+    for (const range of mergeSlots(day.slots, step)) {
+      lines.push(`${prefix}${range}`);
     }
   }
   const text = lines.join('\n');
