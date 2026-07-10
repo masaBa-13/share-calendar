@@ -8,6 +8,20 @@ export interface Env {
   OWNER_CALENDAR: string;
 }
 
+type ErrorCode =
+  | 'NETWORK_ERROR'
+  | 'AUTH_ERROR'
+  | 'CALENDAR_ERROR'
+  | 'VALIDATION_ERROR'
+  | 'INTERNAL_ERROR';
+
+class AppError extends Error {
+  constructor(public readonly code: ErrorCode, message: string) {
+    super(message);
+    this.name = 'AppError';
+  }
+}
+
 const WORK_START = 9 * 60;
 const WORK_END   = 17 * 60;
 const DAY_JP = ['日', '月', '火', '水', '木', '金', '土'];
