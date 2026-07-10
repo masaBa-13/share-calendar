@@ -46,15 +46,10 @@ async function load(u, m) {
   const out = document.getElementById('output');
   out.innerHTML = '<p class="loading">読み込み中...</p>';
   try {
-    const res = await fetch(`${WORKER_URL}/api/slots?t=${u}&mode=${m}`);
-    if (!res.ok) {
-      const body = await res.json().catch(() => ({}));
-      throw new Error(body.error || `HTTP ${res.status}`);
-    }
-    cachedData = await res.json();
+    cachedData = await apiFetch(`${WORKER_URL}/api/slots?t=${u}&mode=${m}`);
     render();
   } catch (e) {
-    out.innerHTML = `<p class="error">エラー: ${escapeHtml(e.message)}</p>`;
+    out.innerHTML = `<p class="error">${escapeHtml(e.message)}</p>`;
   }
 }
 
