@@ -10,7 +10,7 @@ const ERROR_MESSAGES = {
   INTERNAL_ERROR:    '予期しないエラーが発生しました。しばらくしてから再度お試しください',
 };
 
-async function apiFetch(url, options, { retryOnNetwork = true } = {}) {
+async function apiFetch(url, options, { retryOnNetwork = true, onRetry } = {}) {
   try {
     const res = await fetch(url, options);
     const data = await res.json().catch(() => ({}));
@@ -26,6 +26,7 @@ async function apiFetch(url, options, { retryOnNetwork = true } = {}) {
     if (err.code) throw err;
     // TypeError: Failed to fetch など、ネットワーク起因のエラー
     if (retryOnNetwork) {
+      onRetry?.();
       await new Promise(r => setTimeout(r, 1500));
       return apiFetch(url, options, { retryOnNetwork: false });
     }
