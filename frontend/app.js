@@ -2,6 +2,39 @@ const WORKER_URL = location.hostname === 'localhost' || location.hostname === '1
   ? `http://${location.hostname === 'localhost' || location.hostname === '127.0.0.1' ? 'localhost' : location.hostname}:8787`
   : 'https://aima.miraidai.workers.dev';
 
+const ERROR_MESSAGES = {
+  NETWORK_ERROR:     'ネットワークに接続できませんでした。通信環境を確認してください',
+  AUTH_ERROR:        'システムエラーが発生しました。管理者に連絡してください（認証エラー）',
+  CALENDAR_ERROR:    'カレンダーへの登録に失敗しました。しばらくしてから再度お試しください',
+  VALIDATION_ERROR:  '入力内容に問題があります。内容を確認してください',
+  INTERNAL_ERROR:    '予期しないエラーが発生しました。しばらくしてから再度お試しください',
+};
+
+async function apiFetch(url, options, { retryOnNetwork = true } = {}) {
+  try {
+    const res = await fetch(url, options);
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) {
+      const code = data.code || 'INTERNAL_ERROR';
+      const msg = ERROR_MESSAGES[code] || data.error || `エラーが発生しました（HTTP ${res.status}）`;
+      const err = new Error(msg);
+      err.code = code;
+      throw err;
+    }
+    return data;
+  } catch (err) {
+    if (err.code) throw err;
+    // TypeError: Failed to fetch など、ネットワーク起因のエラー
+    if (retryOnNetwork) {
+      await new Promise(r => setTimeout(r, 1500));
+      return apiFetch(url, options, { retryOnNetwork: false });
+    }
+    const networkErr = new Error(ERROR_MESSAGES.NETWORK_ERROR);
+    networkErr.code = 'NETWORK_ERROR';
+    throw networkErr;
+  }
+}
+
 const DAY_JP = ['日', '月', '火', '水', '木', '金', '土'];
 
 let unit = 30;
