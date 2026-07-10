@@ -200,7 +200,7 @@ async function getOAuthAccessToken(env: Env): Promise<string> {
       }).toString(),
     });
   } catch {
-    throw new AppError('NETWORK_ERROR', 'Google認証サーバーへの接続に失敗しました');
+    throw new AppError('UPSTREAM_ERROR', 'Google認証サーバーへの接続に失敗しました。しばらくしてから再度お試しください');
   }
 
   if (!resp.ok) {
