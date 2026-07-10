@@ -357,11 +357,7 @@ export default {
           headers: { ...CORS_HEADERS, 'Content-Type': 'application/json' },
         });
       } catch (e: unknown) {
-        const msg = e instanceof Error ? e.message : String(e);
-        return new Response(JSON.stringify({ error: msg }), {
-          status: 500,
-          headers: { ...CORS_HEADERS, 'Content-Type': 'application/json' },
-        });
+        return toErrorResponse(e);
       }
     }
 
