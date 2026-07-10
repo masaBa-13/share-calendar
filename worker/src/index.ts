@@ -229,6 +229,20 @@ const CORS_HEADERS = {
   'Access-Control-Allow-Headers': 'Content-Type',
 };
 
+function toErrorResponse(e: unknown, status = 500): Response {
+  if (e instanceof AppError) {
+    return new Response(JSON.stringify({ error: e.message, code: e.code }), {
+      status: e.code === 'VALIDATION_ERROR' ? 400 : status,
+      headers: { ...CORS_HEADERS, 'Content-Type': 'application/json' },
+    });
+  }
+  const msg = e instanceof Error ? e.message : String(e);
+  return new Response(JSON.stringify({ error: msg, code: 'INTERNAL_ERROR' }), {
+    status,
+    headers: { ...CORS_HEADERS, 'Content-Type': 'application/json' },
+  });
+}
+
 interface EventBody {
   date: string;
   startTime: string;
