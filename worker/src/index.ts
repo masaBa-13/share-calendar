@@ -273,6 +273,15 @@ function validateEventBody(body: unknown): EventBody {
 
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
+    try {
+      return await handleRequest(request, env);
+    } catch (e: unknown) {
+      return toErrorResponse(e);
+    }
+  },
+};
+
+async function handleRequest(request: Request, env: Env): Promise<Response> {
     const url = new URL(request.url);
 
     if (request.method === 'OPTIONS') {
