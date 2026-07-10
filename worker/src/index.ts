@@ -368,7 +368,10 @@ export default {
     // ---- POST /api/events ----
     if (url.pathname === '/api/events' && request.method === 'POST') {
       try {
-        const body = await request.json() as EventBody;
+        const raw = await request.json().catch(() => {
+          throw new AppError('VALIDATION_ERROR', 'リクエスト本文のJSONが不正です');
+        });
+        const body = validateEventBody(raw);
 
         const [h, m] = body.startTime.split(':').map(Number);
         const startMin = h * 60 + m;
@@ -390,27 +393,38 @@ export default {
         };
 
         const writeToken = await getOAuthAccessToken(env);
-        const createUrl =
-          `https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(env.OWNER_CALENDAR)}/events?sendUpdates=all&conferenceDataVersion=1`;
-        const resp = await fetch(createUrl, {
-          method: 'POST',
-          headers: { Authorization: `Bearer ${writeToken}`, 'Content-Type': 'application/json' },
-          body: JSON.stringify(event),
-        });
-        if (!resp.ok) {
-          const text = await resp.text();
-          throw new Error(`Event creation failed: ${resp.status} ${text}`);
+
+        let calResp: Response;
+        try {
+          calResp = await fetch(
+            `https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(env.OWNER_CALENDAR)}/events?sendUpdates=all&conferenceDataVersion=1`,
+            {
+              method: 'POST',
+              headers: { Authorization: `Bearer ${writeToken}`, 'Content-Type': 'application/json' },
+              body: JSON.stringify(event),
+            },
+          );
+        } catch {
+          throw new AppError('NETWORK_ERROR', 'Googleカレンダーへの接続に失敗しました。時間をおいて再度お試しください');
         }
-        const created = await resp.json() as { id: string };
+
+        if (!calResp.ok) {
+          const text = await calResp.text();
+          const isAuthError = calResp.status === 401 || calResp.status === 403;
+          throw new AppError(
+            isAuthError ? 'AUTH_ERROR' : 'CALENDAR_ERROR',
+            isAuthError
+              ? 'カレンダーへのアクセス権限がありません。管理者に連絡してください'
+              : `カレンダーへの登録に失敗しました（${calResp.status}）`,
+          );
+        }
+
+        const created = await calResp.json() as { id: string };
         return new Response(JSON.stringify({ ok: true, eventId: created.id }), {
           headers: { ...CORS_HEADERS, 'Content-Type': 'application/json' },
         });
       } catch (e: unknown) {
-        const msg = e instanceof Error ? e.message : String(e);
-        return new Response(JSON.stringify({ error: msg }), {
-          status: 500,
-          headers: { ...CORS_HEADERS, 'Content-Type': 'application/json' },
-        });
+        return toErrorResponse(e);
       }
     }
 
