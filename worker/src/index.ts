@@ -251,6 +251,29 @@ interface EventBody {
   attendeeEmail: string;
 }
 
+function validateEventBody(body: unknown): EventBody {
+  if (!body || typeof body !== 'object') {
+    throw new AppError('VALIDATION_ERROR', 'リクエスト本文が不正です');
+  }
+  const b = body as Record<string, unknown>;
+  if (typeof b.date !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(b.date)) {
+    throw new AppError('VALIDATION_ERROR', '日付の形式が不正です');
+  }
+  if (typeof b.startTime !== 'string' || !/^\d{1,2}:\d{2}$/.test(b.startTime)) {
+    throw new AppError('VALIDATION_ERROR', '開始時刻の形式が不正です');
+  }
+  if (typeof b.step !== 'number' || b.step <= 0) {
+    throw new AppError('VALIDATION_ERROR', '時間単位が不正です');
+  }
+  if (typeof b.attendeeName !== 'string' || !b.attendeeName.trim()) {
+    throw new AppError('VALIDATION_ERROR', 'お名前を入力してください');
+  }
+  if (typeof b.attendeeEmail !== 'string' || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(b.attendeeEmail)) {
+    throw new AppError('VALIDATION_ERROR', 'メールアドレスの形式が不正です');
+  }
+  return b as unknown as EventBody;
+}
+
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
     const url = new URL(request.url);
