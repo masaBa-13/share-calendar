@@ -162,7 +162,7 @@ async function submitBooking(e) {
   errEl.textContent = '';
 
   try {
-    const res = await fetch(`${WORKER_URL}/api/events`, {
+    await apiFetch(`${WORKER_URL}/api/events`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -173,14 +173,12 @@ async function submitBooking(e) {
         attendeeEmail: email,
       }),
     });
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.error || `HTTP ${res.status}`);
 
     closeModal();
     showToast('カレンダーに追加しました！');
-    load(unit, mode); // スロット一覧を再読み込み
+    load(unit, mode);
   } catch (err) {
-    errEl.textContent = `エラー: ${err.message}`;
+    errEl.textContent = err.message;
   } finally {
     btn.disabled = false;
     btn.textContent = 'ミーティングの予約をする';
