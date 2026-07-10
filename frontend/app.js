@@ -1,6 +1,6 @@
 const WORKER_URL = location.hostname === 'localhost' || location.hostname === '127.0.0.1' || location.hostname.startsWith('192.168.')
   ? `http://${location.hostname === 'localhost' || location.hostname === '127.0.0.1' ? 'localhost' : location.hostname}:8787`
-  : 'https://aima.miraidai.workers.dev';
+  : '';
 
 const ERROR_MESSAGES = {
   NETWORK_ERROR:     'インターネット接続を確認してください',
