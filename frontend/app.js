@@ -3,7 +3,8 @@ const WORKER_URL = location.hostname === 'localhost' || location.hostname === '1
   : 'https://aima.miraidai.workers.dev';
 
 const ERROR_MESSAGES = {
-  NETWORK_ERROR:     'ネットワークに接続できませんでした。通信環境を確認してください',
+  NETWORK_ERROR:     'インターネット接続を確認してください',
+  UPSTREAM_ERROR:    'Googleサービスへの接続に失敗しました。しばらくしてから再度お試しください',
   AUTH_ERROR:        'システムエラーが発生しました。管理者に連絡してください（認証エラー）',
   CALENDAR_ERROR:    'カレンダーへの登録に失敗しました。しばらくしてから再度お試しください',
   VALIDATION_ERROR:  '入力内容に問題があります。内容を確認してください',
