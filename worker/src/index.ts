@@ -430,5 +430,4 @@ async function handleRequest(request: Request, env: Env): Promise<Response> {
     }
 
     return new Response('Not Found', { status: 404 });
-  },
-};
+}
