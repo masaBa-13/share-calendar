@@ -405,7 +405,6 @@ export default {
         }
 
         if (!calResp.ok) {
-          const text = await calResp.text();
           const isAuthError = calResp.status === 401 || calResp.status === 403;
           throw new AppError(
             isAuthError ? 'AUTH_ERROR' : 'CALENDAR_ERROR',
