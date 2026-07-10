@@ -10,6 +10,7 @@ export interface Env {
 
 type ErrorCode =
   | 'NETWORK_ERROR'
+  | 'UPSTREAM_ERROR'
   | 'AUTH_ERROR'
   | 'CALENDAR_ERROR'
   | 'VALIDATION_ERROR'
