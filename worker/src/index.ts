@@ -178,12 +178,13 @@ function pad2(n: number): string {
   return String(n).padStart(2, '0');
 }
 
-const OAUTH_CACHE_KEY = 'https://token-cache.internal/write-token';
+let oauthTokenCache: { value: string; expiresAt: number } | null = null;
 
 async function getOAuthAccessToken(env: Env): Promise<string> {
-  const cache = caches.default;
-  const cached = await cache.match(OAUTH_CACHE_KEY);
-  if (cached) return cached.text();
+  const now = Date.now();
+  if (oauthTokenCache && oauthTokenCache.expiresAt > now) {
+    return oauthTokenCache.value;
+  }
 
   let resp: Response;
   try {
@@ -213,14 +214,9 @@ async function getOAuthAccessToken(env: Env): Promise<string> {
   }
 
   const data = await resp.json() as { access_token: string; expires_in?: number };
-  const token = data.access_token;
-  const ttl = (data.expires_in ?? 3600) - 60;
-
-  await cache.put(OAUTH_CACHE_KEY, new Response(token, {
-    headers: { 'Cache-Control': `max-age=${ttl}` },
-  }));
-
-  return token;
+  const ttlMs = ((data.expires_in ?? 3600) - 60) * 1000;
+  oauthTokenCache = { value: data.access_token, expiresAt: now + ttlMs };
+  return data.access_token;
 }
 
 const CORS_HEADERS = {
