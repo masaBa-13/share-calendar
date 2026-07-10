@@ -163,17 +163,21 @@ async function submitBooking(e) {
   errEl.textContent = '';
 
   try {
-    await apiFetch(`${WORKER_URL}/api/events`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        date: selectedSlot.date,
-        startTime: selectedSlot.startTime,
-        step: selectedSlot.step,
-        attendeeName: name,
-        attendeeEmail: email,
-      }),
-    });
+    await apiFetch(
+      `${WORKER_URL}/api/events`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          date: selectedSlot.date,
+          startTime: selectedSlot.startTime,
+          step: selectedSlot.step,
+          attendeeName: name,
+          attendeeEmail: email,
+        }),
+      },
+      { onRetry: () => { btn.textContent = '再接続中...'; } },
+    );
 
     closeModal();
     showToast('カレンダーに追加しました！');
