@@ -178,24 +178,49 @@ function pad2(n: number): string {
   return String(n).padStart(2, '0');
 }
 
-// OAuth リフレッシュトークンからアクセストークンを取得
+const OAUTH_CACHE_KEY = 'https://token-cache.internal/write-token';
+
 async function getOAuthAccessToken(env: Env): Promise<string> {
-  const resp = await fetch('https://oauth2.googleapis.com/token', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    body: new URLSearchParams({
-      client_id: env.GOOGLE_OAUTH_CLIENT_ID,
-      client_secret: env.GOOGLE_OAUTH_CLIENT_SECRET,
-      refresh_token: env.GOOGLE_REFRESH_TOKEN,
-      grant_type: 'refresh_token',
-    }).toString(),
-  });
+  const cache = caches.default;
+  const cached = await cache.match(OAUTH_CACHE_KEY);
+  if (cached) return cached.text();
+
+  let resp: Response;
+  try {
+    resp = await fetch('https://oauth2.googleapis.com/token', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams({
+        client_id: env.GOOGLE_OAUTH_CLIENT_ID,
+        client_secret: env.GOOGLE_OAUTH_CLIENT_SECRET,
+        refresh_token: env.GOOGLE_REFRESH_TOKEN,
+        grant_type: 'refresh_token',
+      }).toString(),
+    });
+  } catch {
+    throw new AppError('NETWORK_ERROR', 'Google認証サーバーへの接続に失敗しました');
+  }
+
   if (!resp.ok) {
     const text = await resp.text();
-    throw new Error(`OAuth token refresh failed: ${resp.status} ${text}`);
+    const isExpired = text.includes('invalid_grant');
+    throw new AppError(
+      'AUTH_ERROR',
+      isExpired
+        ? '認証トークンが無効です。管理者に連絡してください'
+        : `認証に失敗しました（${resp.status}）`,
+    );
   }
-  const data = await resp.json() as { access_token: string };
-  return data.access_token;
+
+  const data = await resp.json() as { access_token: string; expires_in?: number };
+  const token = data.access_token;
+  const ttl = (data.expires_in ?? 3600) - 60;
+
+  await cache.put(OAUTH_CACHE_KEY, new Response(token, {
+    headers: { 'Cache-Control': `max-age=${ttl}` },
+  }));
+
+  return token;
 }
 
 const CORS_HEADERS = {
