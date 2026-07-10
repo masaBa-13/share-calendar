@@ -398,7 +398,7 @@ export default {
             },
           );
         } catch {
-          throw new AppError('NETWORK_ERROR', 'Googleカレンダーへの接続に失敗しました。時間をおいて再度お試しください');
+          throw new AppError('UPSTREAM_ERROR', 'Googleカレンダーへの接続に失敗しました。しばらくしてから再度お試しください');
         }
 
         if (!calResp.ok) {
