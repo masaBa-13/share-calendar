@@ -6,6 +6,7 @@ export interface Env {
   GOOGLE_OAUTH_CLIENT_SECRET: string;
   GOOGLE_REFRESH_TOKEN: string;
   OWNER_CALENDAR: string;
+  ADDITIONAL_CALENDAR_IDS?: string;
 }
 
 type ErrorCode =
