@@ -319,6 +319,15 @@ async function handleRequest(request: Request, env: Env): Promise<Response> {
           allEvents.push(...evs);
         }));
 
+        if (env.ADDITIONAL_CALENDAR_IDS) {
+          const oauthToken = await getOAuthAccessToken(env);
+          const additionalIds = env.ADDITIONAL_CALENDAR_IDS.split(',').map(s => s.trim()).filter(Boolean);
+          await Promise.all(additionalIds.map(async id => {
+            const evs = await fetchEvents(id, oauthToken, timeMin, timeMax);
+            allEvents.push(...evs);
+          }));
+        }
+
         const year = jstNow.getUTCFullYear();
         const holidays = new Set([...getJapaneseHolidays(year), ...getJapaneseHolidays(year + 1)]);
 
