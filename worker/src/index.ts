@@ -320,9 +320,10 @@ async function handleRequest(request: Request, env: Env): Promise<Response> {
         }));
 
         if (env.ADDITIONAL_CALENDAR_IDS) {
+          const oauthToken = await getOAuthAccessToken(env);
           const additionalIds = env.ADDITIONAL_CALENDAR_IDS.split(',').map(s => s.trim()).filter(Boolean);
           await Promise.all(additionalIds.map(async id => {
-            const evs = await fetchEvents(id, token, timeMin, timeMax);
+            const evs = await fetchEvents(id, oauthToken, timeMin, timeMax);
             allEvents.push(...evs);
           }));
         }
